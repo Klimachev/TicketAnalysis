@@ -5,7 +5,13 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
         //.json-файл
-        File file = new File(args[0]);
+        String filePath = args[0];
+        if(filePath == null){
+            System.out.println("Путь к файлу не задан.");
+            return;
+        }
+        File file = new File(filePath);//Предполагается, что путь к файлу корректен. В противном случае можно добавить проверку либо try{} catch{}
+
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             //Десериализация .json-файла

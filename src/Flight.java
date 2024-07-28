@@ -44,7 +44,7 @@ public class Flight {
         }
 
         StringBuilder stringBuilder = new StringBuilder(String.format("Минимальное время полета между городами %s и %s для авиаперевозчиков:", originName, destinationName));
-        stringBuilder.append(System.getProperty("line.separator"));
+        stringBuilder.append(System.lineSeparator());
 
         for(var carrier: minFlightTime.keySet()){//Для всех авиаперевозчиков
             long flightTime = (long) minFlightTime.get(carrier);
@@ -52,7 +52,7 @@ public class Flight {
             byte flightMinutes = (byte) ((flightTime/1000%3600)/60);//Время полета (минут)
 
             stringBuilder.append(String.format("%s: %d ч. %d мин.", carrier, flightHours, flightMinutes));
-            stringBuilder.append(System.getProperty("line.separator"));
+            stringBuilder.append(System.lineSeparator());
         }
 
         return stringBuilder.toString();
@@ -63,9 +63,8 @@ public class Flight {
      * @param originName город вылета
      * @param destinationName город прибытия
      * @return String - Разница между средней ценой и медианой для полета между городами
-     * @throws ParseException
      */
-    public String getAvgMedianPriceDifference(String originName, String destinationName) throws ParseException {
+    public String getAvgMedianPriceDifference(String originName, String destinationName) {
         //Средняя цена полета между городами
         double avgPrice = tickets.stream().filter(p->p.origin_name.equals(originName)&& p.destination_name.equals(destinationName)).mapToDouble(t->t.price).average().getAsDouble();
 
@@ -77,9 +76,7 @@ public class Flight {
             median = ((Ticket)sortedTickets[ticketCnt/2]).price;
         else median = (((Ticket)sortedTickets[ticketCnt/2]).price + ((Ticket)sortedTickets[ticketCnt/2-1]).price)/2;
 
-        StringBuilder stringBuilder = new StringBuilder(String.format("Разница между средней ценой и медианой для полета между городами %s и %s: %.2f", originName, destinationName, median));
-
-        return stringBuilder.toString();
+        return String.format("Разница между средней ценой и медианой для полета между городами %s и %s: %.2f", originName, destinationName, avgPrice - median);
     }
 
     /***
